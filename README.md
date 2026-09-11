@@ -1,407 +1,355 @@
-# Automação de Relatórios Comerciais
+🇧🇷 [Read in Portuguese](README.pt-br.md)
 
-**Pipeline automatizado para análise, visualização, geração e distribuição de relatórios de vendas.**
+# Commercial Reports Automation
 
-Este projeto transforma uma planilha de vendas em um fluxo automatizado de análise comercial. A aplicação valida os dados, calcula indicadores, permite filtros interativos, exibe gráficos em um dashboard, gera um relatório em PDF e pode enviá-lo por e-mail.
+Automated pipeline for analysis, visualization, generation, and distribution of sales reports.
 
-> Projeto desenvolvido para demonstrar automação de processos, análise de dados, organização de código Python, testes automatizados, integração contínua e construção de uma interface simples para usuários não técnicos.
+> Live demo: https://automacaorelatorios-abxbbwx42y85fms7s5ah5c.streamlit.app/
 
----
+This project turns a sales spreadsheet into an automated commercial analysis flow. The application validates the data, calculates KPIs, allows interactive filtering, displays charts in a dashboard, generates a PDF report, and can send it by email.
 
-## Visão geral
+Built to demonstrate process automation, data analysis, Python code organization, automated testing, continuous integration, and building a simple interface for non-technical users.
 
-Relatórios comerciais produzidos manualmente costumam exigir várias etapas repetitivas: abrir planilhas, conferir dados, calcular indicadores, montar gráficos, exportar arquivos e distribuí-los para as pessoas responsáveis.
+## Overview
 
-Além do tempo gasto, esse processo pode gerar inconsistências, retrabalho e dificuldade para reproduzir a mesma análise em novos períodos.
+Commercial reports produced manually usually require several repetitive steps: opening spreadsheets, checking data, calculating KPIs, building charts, exporting files, and distributing them to the people responsible.
 
-A proposta deste projeto é centralizar esse fluxo em uma aplicação reutilizável, modular e automatizável.
+Beyond the time spent, this process can generate inconsistencies, rework, and difficulty reproducing the same analysis for new periods.
 
----
+The goal of this project is to centralize this flow into a reusable, modular, and automatable application.
 
-## Arquitetura da solução
+## Solution architecture
 
-```mermaid
-flowchart TD
-    A[Planilha Excel] --> B[Carregamento dos dados]
-    B --> C[Validação e preparação]
-    C --> D[Cálculo de métricas e KPIs]
-    D --> E[Dashboard Streamlit]
-    D --> F[Relatório em PDF]
-    F --> G[Download do relatório]
-    F --> H[Envio opcional por e-mail]
-    C --> I[Logs de execução]
-```
+The project can also be run from the command line, allowing future integration with schedulers, pipelines, or other services.
 
-O projeto também pode ser executado por linha de comando, permitindo sua integração futura com agendadores, pipelines ou outros serviços.
+## Features
 
----
+- Excel spreadsheet upload through the interface.
+- Sample demo dataset included in the project.
+- Automatic validation of the spreadsheet structure.
+- Data cleaning and preparation.
+- Filters by period and category.
+- Total revenue calculation.
+- Total orders.
+- Average ticket.
+- Total items sold.
+- Best-selling product.
+- Highest-revenue product.
+- Estimated profit and margin when unit cost is available.
+- Daily revenue evolution.
+- Product ranking.
+- Revenue share by category.
+- Interactive dashboard with Streamlit.
+- PDF report generation.
+- Report download through the interface.
+- Optional PDF delivery by email.
+- Credential configuration via environment variables.
+- Execution logging to file.
+- Automated tests for the core business rules.
+- Continuous integration with GitHub Actions.
+- Execution via interface or command line.
+- Support for running in a Docker container.
 
-## Funcionalidades
+## Available indicators
 
-- Upload de planilha Excel pela interface.
-- Base fictícia de demonstração incluída no projeto.
-- Validação automática da estrutura da planilha.
-- Tratamento e preparação dos dados.
-- Filtros por período e categoria.
-- Cálculo de faturamento total.
-- Total de pedidos.
-- Ticket médio.
-- Total de itens vendidos.
-- Produto mais vendido.
-- Produto com maior faturamento.
-- Lucro e margem estimados quando há custo unitário.
-- Evolução diária do faturamento.
-- Ranking de produtos.
-- Participação do faturamento por categoria.
-- Dashboard interativo com Streamlit.
-- Geração de relatório em PDF.
-- Download do relatório pela interface.
-- Envio opcional do PDF por e-mail.
-- Configuração de credenciais por variáveis de ambiente.
-- Registro de execução em arquivo de log.
-- Testes automatizados das principais regras de negócio.
-- Integração contínua com GitHub Actions.
-- Execução por interface ou linha de comando.
-- Suporte a execução em container Docker.
-
----
-
-## Indicadores disponíveis
-
-| Indicador | Descrição |
+| Indicator | Description |
 | --- | --- |
-| Faturamento | Soma da receita dos itens vendidos |
-| Pedidos | Quantidade de pedidos únicos |
-| Ticket médio | Faturamento dividido pelo número de pedidos |
-| Itens vendidos | Soma das quantidades vendidas |
-| Produto mais vendido | Produto com maior quantidade vendida |
-| Maior faturamento | Produto que mais gerou receita |
-| Lucro estimado | Receita menos custo, quando o custo é informado |
-| Margem estimada | Percentual de lucro sobre o faturamento |
+| Revenue | Sum of the revenue from sold items |
+| Orders | Number of unique orders |
+| Average ticket | Revenue divided by number of orders |
+| Items sold | Sum of quantities sold |
+| Best-selling product | Product with the highest quantity sold |
+| Highest revenue | Product that generated the most revenue |
+| Estimated profit | Revenue minus cost, when cost is provided |
+| Estimated margin | Profit percentage over revenue |
 
----
+## Technologies used
 
-## Tecnologias utilizadas
+- Python
+- pandas for data cleaning and analysis
+- Streamlit for the web interface
+- Plotly for interactive charts
+- Matplotlib for visualizations used in the report
+- ReportLab for PDF generation
+- openpyxl for reading Excel files
+- python-dotenv for environment variables
+- SMTP for sending emails
+- pytest for automated tests
+- GitHub Actions for continuous integration
+- Docker for containerization
 
-- **Python**
-- **pandas** para tratamento e análise dos dados
-- **Streamlit** para a interface web
-- **Plotly** para gráficos interativos
-- **Matplotlib** para visualizações utilizadas no relatório
-- **ReportLab** para geração de PDF
-- **openpyxl** para leitura de arquivos Excel
-- **python-dotenv** para variáveis de ambiente
-- **SMTP** para envio de e-mails
-- **pytest** para testes automatizados
-- **GitHub Actions** para integração contínua
-- **Docker** para containerização
-
----
-
-## Estrutura do projeto
+## Project structure
 
 ```text
 AUTOMACAO_RELATORIOS/
 │
-├── app.py                       # Interface Streamlit
-├── main.py                      # Execução por linha de comando
-├── requirements.txt            # Dependências do projeto
-├── Dockerfile                  # Configuração do container
+├── app.py                       # Streamlit interface
+├── main.py                      # Command-line execution
+├── requirements.txt            # Project dependencies
+├── Dockerfile                  # Container configuration
 ├── .dockerignore
 ├── pytest.ini
-├── .env.example                # Exemplo de variáveis de ambiente
+├── .env.example                # Environment variables example
 ├── .gitignore
 ├── LICENSE
 │
 ├── .github/
 │   └── workflows/
-│       └── testes.yml          # Testes automáticos no GitHub Actions
+│       └── testes.yml          # Automated tests on GitHub Actions
 │
 ├── docs/
-│   └── relatorio_exemplo.pdf   # Exemplo de relatório gerado
+│   └── relatorio_exemplo.pdf   # Sample report generated by the app
 │
 ├── src/
 │   ├── __init__.py
-│   ├── config.py               # Configurações e variáveis de ambiente
-│   ├── carregador_dados.py     # Leitura da planilha
-│   ├── validador.py            # Validação e preparação dos dados
-│   ├── analises.py             # KPIs e agregações
-│   ├── relatorio_pdf.py        # Geração do PDF
-│   ├── email_service.py        # Envio de e-mail
-│   └── logger_config.py        # Configuração de logs
+│   ├── config.py               # Settings and environment variables
+│   ├── carregador_dados.py     # Spreadsheet reading
+│   ├── validador.py            # Data validation and preparation
+│   ├── analises.py             # KPIs and aggregations
+│   ├── relatorio_pdf.py        # PDF generation
+│   ├── email_service.py        # Email sending
+│   └── logger_config.py        # Logging configuration
 │
 ├── dados/
-│   └── vendas_exemplo.xlsx     # Base fictícia para demonstração
+│   └── vendas_exemplo.xlsx     # Sample dataset for demonstration
 │
 ├── saida/
-│   └── .gitkeep                # Relatórios gerados localmente
+│   └── .gitkeep                # Locally generated reports
 │
 ├── logs/
-│   └── .gitkeep                # Logs locais
+│   └── .gitkeep                # Local logs
 │
 └── tests/
     ├── test_analises.py
     └── test_validador.py
 ```
 
----
+## Sample output
 
-## Exemplo de saída
+The `docs/` directory contains a sample report generated by the application itself, from the included demo dataset.
 
-O diretório `docs/` contém um relatório de demonstração gerado pela própria aplicação a partir da base fictícia incluída no projeto.
+## Expected spreadsheet format
 
-[Visualizar relatório de exemplo](docs/relatorio_exemplo.pdf)
+The spreadsheet must have the following columns:
 
----
+| Column | Required | Example |
+| --- | --- | --- |
+| Data | Yes | 2026-04-01 |
+| Pedido | Yes | PED-0001 |
+| Produto | Yes | Hidratante Corporal 250ml |
+| Categoria | Yes | Cuidados Pessoais |
+| Quantidade | Yes | 2 |
+| Preco_Unitario | Yes | 39.90 |
+| Custo_Unitario | No | 18.50 |
 
-## Formato esperado da planilha
+The `Custo_Unitario` column is optional. When present, the application also calculates estimated profit and margin.
 
-A planilha deve possuir as seguintes colunas:
+## Installation and execution
 
-| Coluna | Obrigatória | Exemplo |
-| --- | :---: | --- |
-| `Data` | Sim | 2026-04-01 |
-| `Pedido` | Sim | PED-0001 |
-| `Produto` | Sim | Hidratante Corporal 250ml |
-| `Categoria` | Sim | Cuidados Pessoais |
-| `Quantidade` | Sim | 2 |
-| `Preco_Unitario` | Sim | 39.90 |
-| `Custo_Unitario` | Não | 18.50 |
-
-A coluna `Custo_Unitario` é opcional. Quando presente, a aplicação também calcula lucro e margem estimados.
-
----
-
-## Instalação e execução
-
-### 1. Clonar o repositório
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/howana28/AUTOMACAO_RELATORIOS.git
 cd AUTOMACAO_RELATORIOS
 ```
 
-### 2. Criar um ambiente virtual
+### 2. Create a virtual environment
 
-#### Windows
+Windows:
 
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
 ```
 
-#### Linux/macOS
+Linux/macOS:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Instalar as dependências
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Iniciar a interface
+### 4. Start the interface
 
 ```bash
 streamlit run app.py
 ```
 
-Após a inicialização, o Streamlit disponibiliza a aplicação localmente no navegador.
+After startup, Streamlit makes the application available locally in the browser.
 
----
+## Command-line execution
 
-## Execução pela linha de comando
-
-Também é possível gerar um relatório sem abrir a interface:
+It's also possible to generate a report without opening the interface:
 
 ```bash
 python main.py --arquivo dados/vendas_exemplo.xlsx
 ```
 
-Para gerar o relatório e enviá-lo por e-mail:
+To generate the report and send it by email:
 
 ```bash
 python main.py --arquivo dados/vendas_exemplo.xlsx --email destinatario@empresa.com
 ```
 
-Esse modo permite integrar a aplicação futuramente com agendadores de tarefas, pipelines de automação ou outros serviços.
+This mode allows the application to be integrated in the future with task schedulers, automation pipelines, or other services.
 
----
+## Email sending configuration
 
-## Configuração do envio por e-mail
+Credentials are not stored directly in the code.
 
-As credenciais não ficam gravadas diretamente no código.
+First, create a `.env` file based on the existing example.
 
-Primeiro, crie um arquivo `.env` a partir do exemplo existente.
-
-### Windows
+Windows:
 
 ```bash
 copy .env.example .env
 ```
 
-### Linux/macOS
+Linux/macOS:
 
 ```bash
 cp .env.example .env
 ```
 
-Depois, configure as variáveis localmente:
+Then, configure the variables locally:
 
-```env
+```text
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 EMAIL_REMETENTE=usuario@exemplo.com
 EMAIL_SENHA=senha_de_aplicativo
 ```
 
-O arquivo `.env` está listado no `.gitignore` e não deve ser enviado ao repositório.
+The `.env` file is listed in `.gitignore` and must not be sent to the repository.
 
-Para provedores que utilizam autenticação em duas etapas, pode ser necessário utilizar uma senha de aplicativo específica para SMTP.
+For providers using two-factor authentication, an app-specific password may be required for SMTP.
 
----
+## Running with Docker
 
-## Execução com Docker
-
-Criar a imagem:
+Build the image:
 
 ```bash
 docker build -t automacao-relatorios-comerciais .
 ```
 
-Executar a aplicação:
+Run the application:
 
 ```bash
 docker run --rm -p 8501:8501 automacao-relatorios-comerciais
 ```
 
-Depois da inicialização, a aplicação fica disponível em:
+After startup, the application is available at:
 
 ```text
 http://localhost:8501
 ```
 
-Para utilizar o envio por e-mail em ambiente containerizado, as variáveis de ambiente devem ser fornecidas de forma segura durante a execução.
+To use email sending in a containerized environment, environment variables must be provided securely at runtime.
 
----
+## Automated tests
 
-## Testes automatizados
+The tests cover the core validation and analysis rules.
 
-Os testes cobrem regras centrais de validação e análise.
-
-Para executar:
+To run them:
 
 ```bash
 pytest
 ```
 
-Atualmente são verificados cenários relacionados a:
+Currently covered scenarios include:
 
-- validação de colunas obrigatórias;
-- preparação dos dados;
-- cálculo de faturamento;
-- cálculo de KPIs;
-- ranking de produtos.
+- required column validation;
+- data preparation;
+- revenue calculation;
+- KPI calculation;
+- product ranking.
 
----
+## Continuous integration
 
-## Integração contínua
+The repository has a workflow at `.github/workflows/testes.yml`.
 
-O repositório possui um workflow em `.github/workflows/testes.yml`.
+On every push or pull request, GitHub Actions sets up the environment and automatically runs the project's tests.
 
-A cada `push` ou `pull request`, o GitHub Actions prepara o ambiente e executa automaticamente os testes do projeto.
+This helps catch regressions before new changes are merged into the main branch.
 
-Isso ajuda a identificar regressões antes que novas alterações sejam incorporadas ao código principal.
+## Usage flow
 
----
+1. The spreadsheet is uploaded through the interface or loaded via command-line mode.
+2. The application validates the required columns and values.
+3. The data is prepared and new metrics are calculated.
+4. The dashboard displays KPIs and visualizations.
+5. Period and category can be filtered.
+6. The PDF report is generated with the selected data.
+7. The file can be downloaded or sent by email.
+8. Command-line mode executions can be logged.
 
-## Fluxo de uso
+## Architecture decisions
 
-1. A planilha é enviada pela interface ou carregada pelo modo de linha de comando.
-2. A aplicação valida as colunas e os valores obrigatórios.
-3. Os dados são preparados e novas métricas são calculadas.
-4. O dashboard apresenta KPIs e visualizações.
-5. O período e a categoria podem ser filtrados.
-6. O relatório em PDF é gerado com os dados selecionados.
-7. O arquivo pode ser baixado ou enviado por e-mail.
-8. As execuções do modo de linha de comando podem ser registradas em log.
+The project separates responsibilities to avoid concentrating all logic in a single file.
 
----
+- `carregador_dados.py` concentrates data input.
+- `validador.py` gathers validation and quality rules.
+- `analises.py` contains analytical rules and indicators.
+- `relatorio_pdf.py` concentrates document generation.
+- `email_service.py` isolates the email integration.
+- `config.py` centralizes external configuration.
+- `logger_config.py` centralizes logging.
+- `app.py` acts as the interface layer.
+- `main.py` offers an automatable command-line alternative.
 
-## Decisões de arquitetura
+This separation makes maintenance, testing, and future integrations easier.
 
-O projeto separa responsabilidades para evitar concentrar toda a lógica em um único arquivo.
+## Security
 
-- `carregador_dados.py` concentra a entrada dos dados.
-- `validador.py` reúne as regras de validação e qualidade.
-- `analises.py` contém as regras analíticas e os indicadores.
-- `relatorio_pdf.py` concentra a geração do documento.
-- `email_service.py` isola a integração de e-mail.
-- `config.py` centraliza configurações externas.
-- `logger_config.py` centraliza o registro de logs.
-- `app.py` funciona como camada de interface.
-- `main.py` oferece uma alternativa automatizável por linha de comando.
+Sensitive credentials and configuration must not be written directly into the source code.
 
-Essa divisão facilita manutenção, testes e futuras integrações.
+The application uses environment variables and keeps the `.env` file out of version control via `.gitignore`.
 
----
+In a production environment, secrets should be stored using dedicated credential management mechanisms provided by the infrastructure in use.
 
-## Segurança
+## Demo data
 
-Credenciais e configurações sensíveis não devem ser escritas diretamente no código-fonte.
+The `dados/vendas_exemplo.xlsx` file contains only fictitious data created for demonstration purposes.
 
-A aplicação utiliza variáveis de ambiente e mantém o arquivo `.env` fora do versionamento por meio do `.gitignore`.
+This allows the project to be run and evaluated without publishing real commercial information.
 
-Em um ambiente de produção, segredos devem ser armazenados em mecanismos próprios de gerenciamento de credenciais oferecidos pela infraestrutura utilizada.
+## Possible improvements
 
----
+- Automatic comparison with previous periods.
+- Sales targets and achievement analysis.
+- Additional export to Excel and CSV.
+- Persistence in a database.
+- History of generated reports.
+- Automatic report scheduling.
+- Integration with ERP or marketplace APIs.
+- User authentication.
+- Role-based access control.
+- Cloud deployment.
+- Report delivery through other channels.
+- Integration tests and broader automated coverage.
 
-## Dados de demonstração
+## Project goal
 
-O arquivo `dados/vendas_exemplo.xlsx` contém apenas dados fictícios criados para demonstração.
+This project was built as a portfolio application focused on demonstrating skills in:
 
-Isso permite executar e avaliar o projeto sem publicar informações comerciais reais.
+- process automation;
+- data analysis and processing;
+- business indicator creation;
+- interface development with Python;
+- automated document generation;
+- integration with external services;
+- modular code organization;
+- automated testing;
+- continuous integration;
+- configuration and security best practices;
+- containerization.
 
----
+## License
 
-## Possíveis evoluções
-
-- Comparação automática com períodos anteriores.
-- Metas comerciais e análise de atingimento.
-- Exportação adicional para Excel e CSV.
-- Persistência em banco de dados.
-- Histórico de relatórios gerados.
-- Agendamento automático de relatórios.
-- Integração com APIs de ERP ou marketplaces.
-- Autenticação de usuários.
-- Controle de acesso por perfil.
-- Deploy em ambiente cloud.
-- Envio de relatórios por outros canais.
-- Testes de integração e maior cobertura automatizada.
-
----
-
-## Objetivo do projeto
-
-Este projeto foi construído como uma aplicação de portfólio com foco em demonstrar competências em:
-
-- automação de processos;
-- análise e tratamento de dados;
-- criação de indicadores de negócio;
-- desenvolvimento de interfaces com Python;
-- geração automatizada de documentos;
-- integração com serviços externos;
-- organização modular de código;
-- testes automatizados;
-- integração contínua;
-- boas práticas de configuração e segurança;
-- containerização.
-
----
-
-## Licença
-
-Distribuído sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE).
+Distributed under the MIT license. See the [LICENSE](LICENSE) file.
